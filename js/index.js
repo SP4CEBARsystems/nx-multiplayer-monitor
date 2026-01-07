@@ -13,9 +13,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // }
 
     const disk1 = new DiskInterpret('Disk 1', url1);
-    disk1.render();
     const disk2 = new DiskInterpret('Disk 2', url2);
-    disk2.render();
+    Promise.all([disk1.load(), disk2.load()]).then(() => {
+        disk1.render();
+        disk2.render();
+    });
 
     // DataLoading.getString(url1).then(data => {
     //     disk1RawElement.textContent = data ?? "";

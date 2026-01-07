@@ -1,19 +1,22 @@
+import HttpError from './HttpError.js';
+
 export default class DataLoading {
     /**
-     * 
-     * @param {string} url 
+     * @param {string} url
+     * @returns {Promise<string>}
+     * @throws {HttpError}
      */
     static async getString(url) {
-        try {
-            const res = await fetch(url);
-            if (!res.ok) {
-                throw new Error(`HTTP error! status: ${res.status}`);
-            }
-            const data = await res.text();
-            return data;
-        } catch (error) {
-            console.error('Fetch error:', error);
-            return null;
+        const res = await fetch(url);
+
+        if (!res.ok) {
+            throw new HttpError(
+                res.status,
+                res.statusText,
+                url
+            );
         }
+
+        return res.text();
     }
 }
