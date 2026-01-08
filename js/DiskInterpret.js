@@ -135,21 +135,21 @@ export default class DiskInterpreter {
     }
 
     async render() {
-        ('render')
+
         if (!this.parentElement) {
             console.error('no "disk-data-section" element');
             return;
         }
         if (this.data === undefined && this.statusCode === undefined) {
-            ('render loading')
+
             await this.load();
         }
         if (this.statusCode !== undefined) {
-            ('render error')
+
             return this.renderError();
         }
         if (this.data === undefined) {
-            ('render nothing')
+
             console.error('no disk data');
             return;
         }
@@ -162,10 +162,9 @@ export default class DiskInterpreter {
             this.round === undefined ||
             this.playerResponses === undefined
         ) {
-            ('render raw')
             return this.renderRawPart();
         }
-        ('render interpreted')
+
         this.renderInterpretedPart();
     }
 
