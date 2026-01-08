@@ -47,3 +47,7 @@ aside {
 aside a {
     padding: 0 10px;
 }
+
+#countdown-message {
+  color: gray;
+}
