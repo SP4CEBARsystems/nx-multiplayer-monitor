@@ -8,6 +8,9 @@ export default class DiskInterpreter {
     /** @type {string} */
     cdnUrl
 
+    /** @type {string} */
+    shareUrl
+
     /** @type {HTMLElement|null} */
     parentElement
 
@@ -21,10 +24,12 @@ export default class DiskInterpreter {
      * 
      * @param {string} name 
      * @param {string} cdnUrl 
+     * @param {string} shareUrl 
      */
-    constructor(name, cdnUrl) {
+    constructor(name, cdnUrl, shareUrl) {
         this.name = name;
         this.cdnUrl = cdnUrl;
+        this.shareUrl = shareUrl;
         this.parentElement = document.getElementById('disk-data-section');
     }
 
@@ -208,7 +213,6 @@ export default class DiskInterpreter {
         const titleElement = document.createElement('h2');
         titleElement.textContent = this.name;
         const codeElement = document.createElement('ul');
-        ('vals, ', this.playerCount, this.round, this.playerResponses);
         const playerCountElement = document.createElement('li');
         const roundElement = document.createElement('li');
         playerCountElement.textContent = `player count: ${this.playerCount}`;
@@ -220,8 +224,14 @@ export default class DiskInterpreter {
             el.textContent = `layer ${i}'s move: ${v}`;
             codeElement.appendChild(el);
         });
+        const linkElement = document.createElement('a');
+        linkElement.href = this.shareUrl;
+        linkElement.textContent = 'Join Game';
+        linkElement.target = '_blank'
+        linkElement.rel = 'noopener noreferrer';
         wrapper.appendChild(titleElement);
         wrapper.appendChild(codeElement);
+        wrapper.appendChild(linkElement);
         this.parentElement.appendChild(wrapper);
     }
 

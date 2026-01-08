@@ -12,6 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
     //     return;
     // }
 
+    const shareUrl1 = 'https://www.icloud.com/iclouddrive/0d2QPN9BYzcp14n6izA1RJweA#Disk';
+    const shareUrl2 = 'https://www.icloud.com/iclouddrive/0acjv5mInMtveiYZVbt9UmkyA#Disk';
+
     // const statusMessages = document.getElementById('status-messages');
     const diskDataSectionElement = document.getElementById('disk-data-section');
     const countdownMessageElement = document.getElementById('countdown-message');
@@ -32,8 +35,8 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     let countdownNumber = loadingInterval / seconds;
 
-    const disk1 = new DiskInterpret('Disk 1', url1);
-    const disk2 = new DiskInterpret('Disk 2', url2);
+    const disk1 = new DiskInterpret('Disk 1', url1, shareUrl1);
+    const disk2 = new DiskInterpret('Disk 2', url2, shareUrl2);
 
     loadAll();
     setInterval(loadAll, loadingInterval);
