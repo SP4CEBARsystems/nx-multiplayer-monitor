@@ -76,7 +76,7 @@ export default class DiskInterpreter {
      */
     static parse(text) {
         // Matches #0: through #15:, capturing the number (0–15)
-        const markerRegex = /#([0-9]|1[0-5]):(.*)(?:\r\n|\r|\n)(\d*)/g;
+        const markerRegex = /#([0-9]|1[0-5]):(.*)(?:\r\n|\r|\n)((?:\d|\r\n|\r|\n)*)/g;
 
         /** @type {{ index: number, name:string, data: string }[]} */
         const result = [];
@@ -87,17 +87,7 @@ export default class DiskInterpreter {
             const match = matches[i];
             const index = Number(match[1]);
             const name = match[2];
-            const data = match[3];
-
-            // const start = match.index + match[0].length;
-            // const end = i + 1 < matches.length
-            //     ? matches[i + 1].index
-            //     : text.length;
-
-            // const data = text
-            //     .slice(start, end)
-            //     .trim();
-
+            const data = match[3].replace(/(\r\n|\r|\n)/g, "");
             result.push({ index, name, data });
         }
 
