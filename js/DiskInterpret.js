@@ -171,7 +171,7 @@ export default class DiskInterpreter {
         let errorName = '';
         switch (this.statusCode) {
             case 400: case 410:
-                errorName = 'is unavailable';
+                errorName = 'is empty or unavailable';
                 break;
                 
             default:
