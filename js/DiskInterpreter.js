@@ -87,11 +87,20 @@ export default class DiskInterpreter {
             const match = matches[i];
             const index = Number(match[1]);
             const name = match[2];
-            const data = match[3].replace(/(\r\n|\r|\n)/g, "");
+            const data = DiskInterpreter.removeLineBreaks(match[3]);
             result.push({ index, name, data });
         }
 
         return result;
+    }
+
+    /**
+     * 
+     * @param {string} input 
+     * @returns 
+     */
+    static removeLineBreaks(input) {
+        return input.replace(/(?:\r\n|\r|\n)/g, "");
     }
 
     isDefined() {
