@@ -12,32 +12,54 @@ document.addEventListener('DOMContentLoaded', () => {
     //     return;
     // }
 
-    const statusMessages = document.getElementById('status-messages');
+    // const statusMessages = document.getElementById('status-messages');
     const diskDataSectionElement = document.getElementById('disk-data-section');
-    if (!statusMessages) {
-        console.error('no status messages element')
-        return;
-    }
+    const countdownMessageElement = document.getElementById('countdown-message');
+    // if (!statusMessages) {
+    //     console.error('no status messages element')
+    //     return;
+    // }
+
+    const seconds = 1000;
+    const loadingInterval = 30 * seconds;
+
+    /**
+     * @type {number|undefined}
+     */
+    let loadingCountdownInterval = undefined;
+    /**
+     * @type {number}
+     */
+    let countdownNumber = loadingInterval / seconds;
 
     const disk1 = new DiskInterpret('Disk 1', url1);
     const disk2 = new DiskInterpret('Disk 2', url2);
 
     loadAll();
-    const seconds = 1000;
-    const loadingInterval = 30 * seconds;
     setInterval(loadAll, loadingInterval);
 
-
     function loadAll() {
-        if (!statusMessages || !diskDataSectionElement) {
+        if (
+            // !statusMessages || 
+            !diskDataSectionElement || !countdownMessageElement) {
             return;
         }
-        statusMessages.textContent = 'Loading...';
+        if (loadingCountdownInterval !== undefined) {
+            clearInterval(loadingCountdownInterval);
+            loadingCountdownInterval = undefined;
+            countdownNumber = loadingInterval / seconds;
+            countdownMessageElement.textContent = `Refreshing...`
+        }
+        loadingCountdownInterval = setInterval(
+            () => countdownMessageElement.textContent = `Refreshing in ${--countdownNumber}`,
+            seconds
+        );
+        // statusMessages.textContent = 'Loading...';
         Promise.all([disk1.load(), disk2.load()]).then(() => {
             diskDataSectionElement.innerHTML = '';
             disk1.render();
             disk2.render();
-            statusMessages.textContent = '';
+            // statusMessages.textContent = '';
         });
     }
     // DataLoading.getString(url1).then(data => {
