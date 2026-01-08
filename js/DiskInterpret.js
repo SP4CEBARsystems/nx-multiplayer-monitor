@@ -1,4 +1,5 @@
 import DataLoading from "./DataLoading.js";
+import DiskContentInterpret from "./DiskContentInterpret.js";
 import HttpError from "./HttpError.js";
 import UiBuilder from "./UiBuilder.js";
 
@@ -23,16 +24,9 @@ export default class DiskInterpreter {
     
     /** @type {UiBuilder} */
     builder
-
     
-    /** @type {number|undefined} */
-    playerCount
-    
-    /** @type {number|undefined} */
-    round
-    
-    /** @type {number[]} */
-    playerResponses = []
+    /** @type {DiskContentInterpret} */
+    interpreter
 
     /**
      * 
@@ -46,6 +40,7 @@ export default class DiskInterpreter {
         this.shareUrl = shareUrl;
         this.parentElement = document.getElementById('disk-data-section');
         this.builder = new UiBuilder();
+        this.interpreter = new DiskContentInterpret();
     }
 
     async load() {
@@ -60,78 +55,6 @@ export default class DiskInterpreter {
                 console.error('Network error', err);
             }
         }
-    }
-
-    interpret() {
-        if (!this.data) {
-            return
-        }
-        const parsedData = DiskInterpreter.parse(this.data);
-        this.playerCount = DiskInterpreter.extractProperty(parsedData, 0);
-        this.round = DiskInterpreter.extractProperty(parsedData, 1);
-        this.playerResponses = DiskInterpreter.extractProperties(parsedData, 2);
-    }
-
-    /**
-     * 
-     * @param {{ index: number, data: string }[]} parsedData 
-     * @param {number} targetIndex 
-     * @returns {number|undefined}
-     */
-    static extractProperty(parsedData, targetIndex) {
-        const data = parsedData.find(v => v.index === targetIndex)?.data;
-        if (data === undefined) {
-            return undefined;
-        }
-        return parseInt(data);
-    }
-
-    /**
-     * 
-     * @param {{ index: number, data: string }[]} parsedData 
-     * @param {number} minTargetIndex 
-     * @param {number} maxTargetIndex 
-     * @returns {number[]}
-     */
-    static extractProperties(parsedData, minTargetIndex = 0, maxTargetIndex = 15) {
-        const found = parsedData.filter(v => v.index >= minTargetIndex && v.index <= maxTargetIndex);
-        return found.map((e) => parseInt(e.data));
-    }
-
-    /**
-     * Parse the text into structured segments.
-     *
-     * @param {string} text
-     * @returns {{ index: number, data: string }[]}
-     */
-    static parse(text) {
-        // Matches #0: through #15:, capturing the number (0–15)
-        const markerRegex = /#([0-9]|1[0-5]):(.*)(?:\r\n|\r|\n)(\d*)/g;
-
-        /** @type {{ index: number, name:string, data: string }[]} */
-        const result = [];
-
-        const matches = [...text.matchAll(markerRegex)];
-
-        for (let i = 0; i < matches.length; i++) {
-            const match = matches[i];
-            const index = Number(match[1]);
-            const name = match[2];
-            const data = match[3];
-
-            // const start = match.index + match[0].length;
-            // const end = i + 1 < matches.length
-            //     ? matches[i + 1].index
-            //     : text.length;
-
-            // const data = text
-            //     .slice(start, end)
-            //     .trim();
-
-            result.push({ index, name, data });
-        }
-
-        return result;
     }
 
     async render() {
@@ -152,11 +75,8 @@ export default class DiskInterpreter {
         if (this.data === '') {
             this.renderMessage();
         }
-        this.interpret();
-        if (
-            this.playerCount === undefined ||
-            this.round === undefined
-        ) {
+        this.interpreter.interpret(this.data);
+        if (!this.interpreter.isDefined()) {
             this.renderRaw();
         }
         this.renderInterpretedPart();
@@ -205,14 +125,10 @@ export default class DiskInterpreter {
     }
 
     renderInterpretedPart() {
-        if (
-            this.playerCount === undefined ||
-            this.round === undefined ||
-            !this.parentElement
-        ) return;
+        if (!this.interpreter.isDefined() || !this.parentElement) return;
         this.builder.reset();
         this.builder.title(this.name);
-        this.builder.interpretedCode(this.playerCount, this.round, this.playerResponses);
+        this.builder.interpretedCode(this.interpreter);
         this.builder.link(this.shareUrl);
         this.parentElement.appendChild(this.builder.get());
     }

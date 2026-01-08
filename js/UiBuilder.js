@@ -1,3 +1,5 @@
+import DiskContentInterpret from "./DiskContentInterpret.js";
+
 export default class UiBuilder {
     /** @type {HTMLHeadingElement | undefined} */
     titleElement
@@ -32,24 +34,28 @@ export default class UiBuilder {
 
     /**
      * 
-     * @param {number | undefined} playerCount 
-     * @param {number | undefined} round 
-     * @param {number[]} playerResponses 
+     * @param {DiskContentInterpret} interpreter
      * @returns 
      */
-    interpretedCode(playerCount, round, playerResponses) {
+    interpretedCode(interpreter) {
         this.codeElement = document.createElement('ul');
         if (!this.codeElement) {
             return;
         }
         const codeElement = this.codeElement
         const playerCountElement = document.createElement('li');
+        const maxPlayersElement = document.createElement('li');
         const roundElement = document.createElement('li');
-        playerCountElement.textContent = `player count: ${playerCount}`;
-        roundElement.textContent = `round: ${round}`;
+        const gameSettingsElement = document.createElement('li');
+        playerCountElement.textContent = `player count: ${interpreter.playerCount}`;
+        maxPlayersElement.textContent = `max players: ${interpreter.maxClients}`;
+        roundElement.textContent = `round: ${interpreter.round}`;
+        gameSettingsElement.textContent = `game settings: ${interpreter.gameSettings}`;
         codeElement.appendChild(playerCountElement);
+        codeElement.appendChild(maxPlayersElement);
         codeElement.appendChild(roundElement);
-        playerResponses.forEach((v, i) => {
+        codeElement.appendChild(gameSettingsElement);
+        interpreter.playerResponses.forEach((v, i) => {
             const el = document.createElement('li');
             el.textContent = `layer ${i}'s move: ${v}`;
             codeElement.appendChild(el);
