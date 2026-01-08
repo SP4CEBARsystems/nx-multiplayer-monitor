@@ -1,4 +1,4 @@
-import DiskInterpret from "./DiskInterpret.js";
+import DiskInterpreter from "./DiskLoader.js";
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -35,8 +35,8 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     let countdownNumber = loadingInterval / seconds;
 
-    const disk1 = new DiskInterpret('Disk 1', url1, shareUrl1);
-    const disk2 = new DiskInterpret('Disk 2', url2, shareUrl2);
+    const disk1 = new DiskInterpreter('Disk 1', url1, shareUrl1);
+    const disk2 = new DiskInterpreter('Disk 2', url2, shareUrl2);
 
     loadAll();
     setInterval(loadAll, loadingInterval);

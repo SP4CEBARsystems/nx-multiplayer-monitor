@@ -1,5 +1,5 @@
 import DataLoading from "./DataLoading.js";
-import DiskContentInterpret from "./DiskContentInterpret.js";
+import DiskContentInterpret from "./DiskInterpreter.js";
 import HttpError from "./HttpError.js";
 import UiBuilder from "./UiBuilder.js";
 

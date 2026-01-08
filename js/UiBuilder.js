@@ -1,4 +1,4 @@
-import DiskContentInterpret from "./DiskContentInterpret.js";
+import DiskContentInterpret from "./DiskInterpreter.js";
 
 export default class UiBuilder {
     /** @type {HTMLHeadingElement | undefined} */
