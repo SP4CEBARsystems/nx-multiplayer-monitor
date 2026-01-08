@@ -1,5 +1,6 @@
 import DataLoading from "./DataLoading.js";
 import HttpError from "./HttpError.js";
+import UiBuilder from "./UiBuilder.js";
 
 export default class DiskInterpreter {
     /** @type {string} */
@@ -19,6 +20,19 @@ export default class DiskInterpreter {
     
     /** @type {number | undefined} */
     statusCode;
+    
+    /** @type {UiBuilder} */
+    builder
+
+    
+    /** @type {number|undefined} */
+    playerCount
+    
+    /** @type {number|undefined} */
+    round
+    
+    /** @type {number[]} */
+    playerResponses = []
 
     /**
      * 
@@ -31,6 +45,7 @@ export default class DiskInterpreter {
         this.cdnUrl = cdnUrl;
         this.shareUrl = shareUrl;
         this.parentElement = document.getElementById('disk-data-section');
+        this.builder = new UiBuilder();
     }
 
     async load() {
@@ -119,57 +134,46 @@ export default class DiskInterpreter {
         return result;
     }
 
-    async renderRaw() {
-        if (!this.parentElement) {
-            console.error('no "disk-data-section" element');
-            return;
-        }
-        if (this.data === undefined) {
-            await this.load();
-        }
-        if (this.data === undefined) {
-            console.error('no disk data');
-            return;
-        }
-        this.renderRawPart();
-    }
-
     async render() {
-
         if (!this.parentElement) {
             console.error('no "disk-data-section" element');
             return;
         }
         if (this.data === undefined && this.statusCode === undefined) {
-
             await this.load();
         }
         if (this.statusCode !== undefined) {
-
             return this.renderError();
         }
         if (this.data === undefined) {
-
             console.error('no disk data');
             return;
         }
         if (this.data === '') {
-            this.renderMessage(`${this.name} is empty`);
+            this.renderMessage();
         }
         this.interpret();
         if (
             this.playerCount === undefined ||
-            this.round === undefined ||
-            this.playerResponses === undefined
+            this.round === undefined
         ) {
-            return this.renderRawPart();
+            this.renderRaw();
         }
-
         this.renderInterpretedPart();
     }
 
+    renderMessage() {
+        if (!this.parentElement) {
+            return;
+        }
+        this.builder.reset();
+        this.builder.title(`${this.name} is empty`);
+        this.builder.link(this.shareUrl);
+        this.parentElement.appendChild(this.builder.get());
+    }
+
     renderError() {
-        if (this.statusCode === undefined) {
+        if (this.statusCode === undefined || !this.parentElement) {
             return;
         }
         let errorName = '';
@@ -182,69 +186,34 @@ export default class DiskInterpreter {
                 errorName = this.errorName ?? this.statusCode.toString();
                 break;
         }
-        this.renderMessage(`${this.name} ${errorName}`)
+        this.builder.reset();
+        this.builder.title(`${this.name} ${errorName}`);
+        this.builder.link(this.shareUrl);
+        this.parentElement.appendChild(this.builder.get());
     }
 
-    /**
-     * 
-     * @param {string} message 
-     * @returns 
-     */
-    renderMessage(message) {
-        if (!this.parentElement || this.statusCode === undefined) {
+    renderRaw() {
+        if (!this.parentElement) {
+            console.error('no "disk-data-section" element');
             return;
         }
-        const wrapper = document.createElement('div');
-        const titleElement = document.createElement('h2');
-        titleElement.textContent = message;
-        wrapper.appendChild(titleElement);
-        this.parentElement.appendChild(wrapper);
+        this.builder.reset();
+        this.builder.title(this.name);
+        this.builder.rawCode(this.data);
+        this.builder.link(this.shareUrl);
+        this.parentElement.appendChild(this.builder.get());
     }
 
     renderInterpretedPart() {
         if (
             this.playerCount === undefined ||
             this.round === undefined ||
-            this.playerResponses === undefined ||
             !this.parentElement
         ) return;
-        const wrapper = document.createElement('div');
-        const titleElement = document.createElement('h2');
-        titleElement.textContent = this.name;
-        const codeElement = document.createElement('ul');
-        const playerCountElement = document.createElement('li');
-        const roundElement = document.createElement('li');
-        playerCountElement.textContent = `player count: ${this.playerCount}`;
-        roundElement.textContent = `round: ${this.round}`;
-        codeElement.appendChild(playerCountElement);
-        codeElement.appendChild(roundElement);
-        this.playerResponses.forEach((v, i) => {
-            const el = document.createElement('li');
-            el.textContent = `layer ${i}'s move: ${v}`;
-            codeElement.appendChild(el);
-        });
-        const linkElement = document.createElement('a');
-        linkElement.href = this.shareUrl;
-        linkElement.textContent = 'Join Game';
-        linkElement.target = '_blank'
-        linkElement.rel = 'noopener noreferrer';
-        wrapper.appendChild(titleElement);
-        wrapper.appendChild(codeElement);
-        wrapper.appendChild(linkElement);
-        this.parentElement.appendChild(wrapper);
-    }
-
-    renderRawPart() {
-        if (!this.parentElement) {
-            return;
-        }
-        const wrapper = document.createElement('div');
-        const titleElement = document.createElement('h2');
-        titleElement.textContent = this.name;
-        const codeElement = document.createElement('pre');
-        codeElement.textContent = this.data ?? null;
-        wrapper.appendChild(titleElement);
-        wrapper.appendChild(codeElement);
-        this.parentElement.appendChild(wrapper);
+        this.builder.reset();
+        this.builder.title(this.name);
+        this.builder.interpretedCode(this.playerCount, this.round, this.playerResponses);
+        this.builder.link(this.shareUrl);
+        this.parentElement.appendChild(this.builder.get());
     }
 }
