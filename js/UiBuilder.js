@@ -48,7 +48,7 @@ export default class UiBuilder {
         const roundElement = document.createElement('li');
         const gameSettingsElement = document.createElement('li');
         playerCountElement.textContent = `player count: ${interpreter.playerCount}`;
-        maxPlayersElement.textContent = `max players: ${interpreter.maxClients}`;
+        maxPlayersElement.textContent = `max players: ${interpreter.maxPlayers}`;
         roundElement.textContent = `round: ${interpreter.round}`;
         gameSettingsElement.textContent = `game settings: ${interpreter.gameSettings}`;
         codeElement.appendChild(playerCountElement);

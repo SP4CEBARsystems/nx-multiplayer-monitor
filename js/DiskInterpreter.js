@@ -1,10 +1,9 @@
 export default class DiskInterpreter {
-    
     /** @type {number|undefined} */
     playerCount
     
     /** @type {number|undefined} */
-    maxClients
+    maxPlayers
     
     /** @type {number|undefined} */
     round
@@ -37,7 +36,7 @@ export default class DiskInterpreter {
 
         const parsedData = DiskInterpreter.parse(data);
         this.playerCount = DiskInterpreter.extractProperty(parsedData, F_CLIENT_COUNT);
-        this.maxClients = DiskInterpreter.extractProperty(parsedData, F_MAX_CLIENTS);
+        this.maxPlayers = DiskInterpreter.extractProperty(parsedData, F_MAX_CLIENTS);
         this.round = DiskInterpreter.extractProperty(parsedData, F_ROUND_NUMBER);
         this.gameSettings = DiskInterpreter.extractProperty(parsedData, F_GAME_SETTINGS);
         this.playerResponses = DiskInterpreter.extractProperties(parsedData, F_CLIENT_0_DATA);
@@ -107,7 +106,7 @@ export default class DiskInterpreter {
 
     isDefined() {
         return this.playerCount !== undefined &&
-            this.maxClients !== undefined &&
+            this.maxPlayers !== undefined &&
             this.round !== undefined &&
             this.gameSettings !== undefined;
     }
