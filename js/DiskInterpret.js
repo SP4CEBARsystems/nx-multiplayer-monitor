@@ -135,7 +135,7 @@ export default class DiskInterpreter {
             console.error('no "disk-data-section" element');
             return;
         }
-        if (this.data === undefined) {
+        if (this.data === undefined && this.statusCode === undefined) {
             console.log('render loading')
             await this.load();
         }

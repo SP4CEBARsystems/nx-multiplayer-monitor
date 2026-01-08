@@ -12,13 +12,32 @@ document.addEventListener('DOMContentLoaded', () => {
     //     return;
     // }
 
+    const statusMessages = document.getElementById('status-messages');
+    if (!statusMessages) {
+        console.error('no status messages element')
+        return;
+    }
+
     const disk1 = new DiskInterpret('Disk 1', url1);
     const disk2 = new DiskInterpret('Disk 2', url2);
-    Promise.all([disk1.load(), disk2.load()]).then(() => {
-        disk1.render();
-        disk2.render();
-    });
 
+    loadAll();
+    const seconds = 1000;
+    const loadingInterval = 30 * seconds;
+    setInterval(loadAll, loadingInterval);
+
+
+    function loadAll() {
+        if (!statusMessages) {
+            return;
+        }
+        statusMessages.textContent = 'Loading...';
+        Promise.all([disk1.load(), disk2.load()]).then(() => {
+            disk1.render();
+            disk2.render();
+            statusMessages.textContent = '';
+        });
+    }
     // DataLoading.getString(url1).then(data => {
     //     disk1RawElement.textContent = data ?? "";
     // });
