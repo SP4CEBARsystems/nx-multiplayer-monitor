@@ -100,7 +100,7 @@ export default class DiskInterpreter {
      * @returns 
      */
     static removeLineBreaks(input) {
-        return input.replace(/(?:\r\n|\r|\n)/g, "");
+        return input.replace(/\r\n|\r|\n/g, "");
     }
 
     isDefined() {
