@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // }
 
     const statusMessages = document.getElementById('status-messages');
+    const diskDataSectionElement = document.getElementById('disk-data-section');
     if (!statusMessages) {
         console.error('no status messages element')
         return;
@@ -28,11 +29,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     function loadAll() {
-        if (!statusMessages) {
+        if (!statusMessages || !diskDataSectionElement) {
             return;
         }
         statusMessages.textContent = 'Loading...';
         Promise.all([disk1.load(), disk2.load()]).then(() => {
+            diskDataSectionElement.innerHTML = '';
             disk1.render();
             disk2.render();
             statusMessages.textContent = '';
