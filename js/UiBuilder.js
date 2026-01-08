@@ -1,4 +1,4 @@
-import DiskContentInterpret from "./DiskInterpreter.js";
+import DiskInterpreter from "./DiskInterpreter.js";
 
 export default class UiBuilder {
     /** @type {HTMLHeadingElement | undefined} */
@@ -34,7 +34,7 @@ export default class UiBuilder {
 
     /**
      * 
-     * @param {DiskContentInterpret} interpreter
+     * @param {DiskInterpreter} interpreter
      * @returns 
      */
     interpretedCode(interpreter) {

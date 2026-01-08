@@ -1,9 +1,9 @@
 import DataLoading from "./DataLoading.js";
-import DiskContentInterpret from "./DiskInterpreter.js";
+import DiskInterpreter from "./DiskInterpreter.js";
 import HttpError from "./HttpError.js";
 import UiBuilder from "./UiBuilder.js";
 
-export default class DiskInterpreter {
+export default class DiskLoader {
     /** @type {string} */
     name
 
@@ -25,7 +25,7 @@ export default class DiskInterpreter {
     /** @type {UiBuilder} */
     builder
     
-    /** @type {DiskContentInterpret} */
+    /** @type {DiskInterpreter} */
     interpreter
 
     /**
@@ -40,7 +40,7 @@ export default class DiskInterpreter {
         this.shareUrl = shareUrl;
         this.parentElement = document.getElementById('disk-data-section');
         this.builder = new UiBuilder();
-        this.interpreter = new DiskContentInterpret();
+        this.interpreter = new DiskInterpreter();
     }
 
     async load() {

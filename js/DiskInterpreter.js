@@ -1,4 +1,4 @@
-export default class DiskContentInterpret {
+export default class DiskInterpreter {
     
     /** @type {number|undefined} */
     playerCount
@@ -35,12 +35,12 @@ export default class DiskContentInterpret {
         const F_GAME_SETTINGS = 3;
         const F_CLIENT_0_DATA = 4;
 
-        const parsedData = DiskContentInterpret.parse(data);
-        this.playerCount = DiskContentInterpret.extractProperty(parsedData, F_CLIENT_COUNT);
-        this.maxClients = DiskContentInterpret.extractProperty(parsedData, F_MAX_CLIENTS);
-        this.round = DiskContentInterpret.extractProperty(parsedData, F_ROUND_NUMBER);
-        this.gameSettings = DiskContentInterpret.extractProperty(parsedData, F_GAME_SETTINGS);
-        this.playerResponses = DiskContentInterpret.extractProperties(parsedData, F_CLIENT_0_DATA);
+        const parsedData = DiskInterpreter.parse(data);
+        this.playerCount = DiskInterpreter.extractProperty(parsedData, F_CLIENT_COUNT);
+        this.maxClients = DiskInterpreter.extractProperty(parsedData, F_MAX_CLIENTS);
+        this.round = DiskInterpreter.extractProperty(parsedData, F_ROUND_NUMBER);
+        this.gameSettings = DiskInterpreter.extractProperty(parsedData, F_GAME_SETTINGS);
+        this.playerResponses = DiskInterpreter.extractProperties(parsedData, F_CLIENT_0_DATA);
     }
 
     /**
