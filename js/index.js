@@ -1,7 +1,7 @@
 import DiskInterpret from "./DiskInterpret.js";
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("Hello, DOM content loaded");
+    ("Hello, DOM content loaded");
     const url1 = 'https://cvws.icloud-content.com/B/AQ3_XlL8v395rMs85zqH5IVNGIm4AXBAq9DavmMpyIXXGUT12yNWaG5o/Disk.nx?o=Anfqal9WEWQ91A6_zzks3qZKmo5Ob3hkFhn8BawhHUZR&v=1&x=3&a=CAogYVyImkBTxU9pIUPdvnmG6W2_2OSC4h0rTdZ1Kvy8rCgSbxCsw5TTuTMYrKDw1LkzIgEAUgRNGIm4WgRWaG5oaifeH1KBTc-PzpZqhyvRfdhLAsKNW6SvQNoyjTCF4zvAg8SgmYbYoEByJ8dHCkPz4ASyB_qXYQL_L2Xapv_kM420ZmKCWv60J9g0XiixZSxENA&e=1767825477&fl=&r=68421def-4da0-4e7f-95ce-1632c27f0b8e-1&k=euj1jCQPJ3VyDSKSTE7GIw&ckc=com.apple.clouddocs&ckz=com.apple.CloudDocs&p=127&s=E2l8sh8bEsU-2coDdB-eYIlspOw& =e68fc5bf-021e-463d-9edc-422d33d981b3';
     
     // disk 2 is offline

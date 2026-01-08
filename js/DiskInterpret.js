@@ -130,21 +130,21 @@ export default class DiskInterpreter {
     }
 
     async render() {
-        console.log('render')
+        ('render')
         if (!this.parentElement) {
             console.error('no "disk-data-section" element');
             return;
         }
         if (this.data === undefined && this.statusCode === undefined) {
-            console.log('render loading')
+            ('render loading')
             await this.load();
         }
         if (this.statusCode !== undefined) {
-            console.log('render error')
+            ('render error')
             return this.renderError();
         }
         if (this.data === undefined) {
-            console.log('render nothing')
+            ('render nothing')
             console.error('no disk data');
             return;
         }
@@ -157,10 +157,10 @@ export default class DiskInterpreter {
             this.round === undefined ||
             this.playerResponses === undefined
         ) {
-            console.log('render raw')
+            ('render raw')
             return this.renderRawPart();
         }
-        console.log('render interpreted')
+        ('render interpreted')
         this.renderInterpretedPart();
     }
 
@@ -208,7 +208,7 @@ export default class DiskInterpreter {
         const titleElement = document.createElement('h2');
         titleElement.textContent = this.name;
         const codeElement = document.createElement('ul');
-        console.log('vals, ', this.playerCount, this.round, this.playerResponses);
+        ('vals, ', this.playerCount, this.round, this.playerResponses);
         const playerCountElement = document.createElement('li');
         const roundElement = document.createElement('li');
         playerCountElement.textContent = `player count: ${this.playerCount}`;
